@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= videoName %></title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Youtube Clone</h1>
+        <a href="/" class="home-button">Home</a> <!-- Botón para regresar al home -->
+    </header>
+    <main>
+        <div class="video-container">
+            <video id="videoPlayer" controls autoplay>
+                <source src="/videos/<%= videoName %>" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <p><%= videoName %></p>
+            <p>Categories: <%= videoCategories.join(', ') %></p>
+        </div>
+    </main>
+    <script>
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoId = '<%= videoId %>';
+
+        videoPlayer.addEventListener('timeupdate', () => {
+            fetch(`/video/${videoId}/viewTime`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ viewTime: videoPlayer.currentTime })
+            });
+        });
+    </script>
+</body>
+</html>
